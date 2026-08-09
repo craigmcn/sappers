@@ -14,11 +14,6 @@
   gap: 1rem;
 }
 
-.header__row--controls {
-  justify-content: flex-start;
-  flex-wrap: wrap;
-}
-
 .header__title {
   text-align: center;
 }
@@ -74,26 +69,4 @@
   font-weight: 700;
   font-size: 1.25rem;
   font-variant-numeric: tabular-nums;
-}
-
-.header__new-game {
-  font-family: var(--font-body);
-  font-weight: 600;
-  background: var(--signal);
-  color: var(--signal-ink);
-  border: none;
-  border-radius: 0.3rem;
-  padding: 0.4rem 0.9rem;
-  cursor: pointer;
-}
-
-.header__new-game:hover {
-  filter: brightness(1.08);
-}
-
-.header__summary {
-  margin: 0;
-  font-size: 0.8rem;
-  font-family: var(--font-mono);
-  opacity: 0.8;
 }

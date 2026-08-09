@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Board } from "./components/Board";
-import { DifficultySelector } from "./components/DifficultySelector";
+import { ControlsMenu } from "./components/ControlsMenu";
 import { GameOverlay } from "./components/GameOverlay";
 import { Header } from "./components/Header";
 import {
@@ -59,29 +59,36 @@ function App() {
       .then(setSummary);
   }, [game.status, game.endTime, game.startTime, difficulty]);
 
+  const gameOver = game.status === "won" || game.status === "lost";
+
   return (
     <main className="app">
-      <Header
-        minesRemaining={remainingMineCount(game)}
-        elapsedSeconds={elapsedSeconds}
-        status={game.status}
-        summary={summary}
-        onNewGame={() => startNewGame(difficulty)}
-      />
-      <DifficultySelector difficulty={difficulty} onChange={startNewGame} />
+      <div className="app__content" inert={gameOver || undefined}>
+        <Header
+          minesRemaining={remainingMineCount(game)}
+          elapsedSeconds={elapsedSeconds}
+          status={game.status}
+        />
+        <ControlsMenu
+          difficulty={difficulty}
+          summary={summary}
+          onNewGame={() => startNewGame(difficulty)}
+          onChangeDifficulty={startNewGame}
+        />
+        <div className="app__board-wrap">
+          <Board
+            game={game}
+            onReveal={(row, col) => setGame((g) => reveal(g, row, col))}
+            onFlag={(row, col) => setGame((g) => toggleFlag(g, row, col))}
+            onChord={(row, col) => setGame((g) => chord(g, row, col))}
+          />
+        </div>
+      </div>
       <GameOverlay
         status={game.status}
         elapsedSeconds={elapsedSeconds}
         onPlayAgain={() => startNewGame(difficulty)}
       />
-      <div className="app__board-wrap">
-        <Board
-          game={game}
-          onReveal={(row, col) => setGame((g) => reveal(g, row, col))}
-          onFlag={(row, col) => setGame((g) => toggleFlag(g, row, col))}
-          onChord={(row, col) => setGame((g) => chord(g, row, col))}
-        />
-      </div>
     </main>
   );
 }

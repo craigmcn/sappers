@@ -1,13 +1,10 @@
 import type { GameStatus } from "../engine/types";
-import type { DifficultySummary } from "../stats/statsStore";
 import "./Header.css";
 
 interface HeaderProps {
   minesRemaining: number;
   elapsedSeconds: number;
   status: GameStatus;
-  summary: DifficultySummary | null;
-  onNewGame: () => void;
 }
 
 function formatCounter(value: number): string {
@@ -23,14 +20,6 @@ function formatTime(seconds: number): string {
   return Math.min(999, seconds).toString().padStart(3, "0");
 }
 
-function formatBestTime(ms: number | null): string {
-  if (ms === null) return "—";
-  const totalSeconds = Math.round(ms / 1000);
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-}
-
 const STATUS_LABEL: Record<GameStatus, string> = {
   pending: "Ready",
   playing: "Clearing",
@@ -42,8 +31,6 @@ export function Header({
   minesRemaining,
   elapsedSeconds,
   status,
-  summary,
-  onNewGame,
 }: HeaderProps) {
   return (
     <header className="header">
@@ -68,18 +55,6 @@ export function Header({
             {formatTime(elapsedSeconds)}
           </span>
         </div>
-      </div>
-
-      <div className="header__row header__row--controls">
-        <button type="button" className="header__new-game" onClick={onNewGame}>
-          New Field
-        </button>
-        {summary && (
-          <p className="header__summary">
-            Best {formatBestTime(summary.bestTimeMs)} · Streak{" "}
-            {summary.currentStreak} · {summary.won}/{summary.played} cleared
-          </p>
-        )}
       </div>
     </header>
   );
