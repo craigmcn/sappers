@@ -1,0 +1,99 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--panel-raised);
+  border-bottom: 2px solid var(--line);
+}
+
+.header__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.header__row--controls {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.header__title {
+  text-align: center;
+}
+
+.header__title h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
+  letter-spacing: 0.04em;
+  margin: 0;
+  color: var(--signal);
+  text-wrap: balance;
+}
+
+.header__status {
+  margin: 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  opacity: 0.7;
+}
+
+.header__status--lost {
+  color: var(--danger);
+  opacity: 1;
+}
+
+.header__status--won {
+  color: var(--safe);
+  opacity: 1;
+}
+
+.header__readout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--ink);
+  color: var(--signal);
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.6rem;
+  min-width: 4.5rem;
+}
+
+.header__readout-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.75;
+}
+
+.header__readout-value {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.header__new-game {
+  font-family: var(--font-body);
+  font-weight: 600;
+  background: var(--signal);
+  color: var(--signal-ink);
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+}
+
+.header__new-game:hover {
+  filter: brightness(1.08);
+}
+
+.header__summary {
+  margin: 0;
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  opacity: 0.8;
+}

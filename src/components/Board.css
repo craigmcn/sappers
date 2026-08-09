@@ -1,0 +1,42 @@
+.board {
+  display: grid;
+  gap: 2px;
+  padding: 0.5rem;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 2.125rem 2.125rem;
+  background-color: var(--panel-shadow);
+  border-radius: 0.4rem;
+  overflow: auto;
+  max-width: 100%;
+}
+
+.board--lost {
+  animation: board-shake 320ms ease-in-out;
+}
+
+@keyframes board-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-4px);
+  }
+  40% {
+    transform: translateX(4px);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .board--lost {
+    animation: none;
+  }
+}
