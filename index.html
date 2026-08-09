@@ -8,6 +8,14 @@
     <link rel="icon" href="/icons/icon-192.png" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
 
+    <!-- Must run inline, before any relative-URL asset request (this script,
+         the module script below, icons, manifest): with base: './' every
+         asset URL resolves relative to the current document URL, which only
+         works if that URL ends in '/'. An external same-origin file would
+         hit the same broken resolution it exists to fix, so it can't be
+         extracted. Its exact text is allow-listed by hash in
+         public/_headers' Content-Security-Policy — update that hash if this
+         script's content ever changes. -->
     <script>
       (() =>
         !window.location.pathname.endsWith("/") &&

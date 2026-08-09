@@ -1,0 +1,18 @@
+# Netlify header rules for this repo's own site (published from netlify/,
+# see vite.config.netlify.ts). The separate netlify/sappers/ copy served at
+# craigmcn.com/sappers is deployed as part of that other site's own build,
+# so these rules don't apply there — they'd need to be configured on that
+# site directly.
+#
+# script-src's hash allow-lists the one inline script in index.html (the
+# trailing-slash redirect, which must stay inline — see the comment above it
+# there); it has no other inline or third-party scripts to allow.
+# style-src needs 'unsafe-inline' because Board.tsx sets the board's grid
+# size via an inline style attribute (it varies per difficulty and isn't
+# expressible as a static class); everything else here is same-origin only.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-FGALV05D4g7G4BENEzItcsKln/YAzSyPZhwTWZS+i2g='; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; manifest-src 'self'; worker-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), camera=(), microphone=()
