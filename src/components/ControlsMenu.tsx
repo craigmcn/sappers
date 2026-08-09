@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Difficulty } from "../engine/types";
 import type { DifficultySummary } from "../stats/statsStore";
+import { useFocusTrap } from "../hooks/useFocusTrap";
 import { DifficultySelector } from "./DifficultySelector";
 import "./ControlsMenu.css";
 
@@ -27,33 +28,30 @@ export function ControlsMenu({
 }: ControlsMenuProps) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  const close = () => setOpen(false);
+  useFocusTrap(panelRef, open, { onEscape: close });
 
   useEffect(() => {
     if (!open) return;
 
     const handlePointerDown = (event: PointerEvent) => {
-      if (!menuRef.current?.contains(event.target as Node)) setOpen(false);
-    };
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
+      if (!menuRef.current?.contains(event.target as Node)) close();
     };
 
     document.addEventListener("pointerdown", handlePointerDown);
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("pointerdown", handlePointerDown);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
   }, [open]);
 
   const handleNewGame = () => {
     onNewGame();
-    setOpen(false);
+    close();
   };
 
   const handleChangeDifficulty = (next: Difficulty) => {
     onChangeDifficulty(next);
-    setOpen(false);
+    close();
   };
 
   return (
@@ -71,6 +69,7 @@ export function ControlsMenu({
 
       <div
         id="controls-menu-panel"
+        ref={panelRef}
         className={`controls-menu__panel${open ? " controls-menu__panel--open" : ""}`}
       >
         <button

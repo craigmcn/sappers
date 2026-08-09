@@ -1,7 +1,7 @@
 import "fake-indexeddb/auto";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { axe } from "vitest-axe";
 import App from "./App";
 
@@ -13,6 +13,37 @@ describe("App", () => {
   it("has no detectable accessibility violations", async () => {
     const { container } = render(<App />);
     expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("has no detectable accessibility violations with the mobile menu open", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<App />);
+
+    await user.click(screen.getByRole("button", { name: /menu/i }));
+
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("has no detectable accessibility violations on the loss overlay", async () => {
+    // With Math.random mocked to a fixed value, mine placement is
+    // deterministic. 0.1 was verified (see engine tests' RNG-injection
+    // pattern) to give a Beginner (9x9) board a small, contained cascade
+    // from (0,0) — leaving (0,2) hidden as a mine — rather than the
+    // whole-board cascade a naive constant like 0 can produce.
+    const randomSpy = vi.spyOn(Math, "random").mockReturnValue(0.1);
+    try {
+      const user = userEvent.setup();
+      const { container } = render(<App />);
+
+      const cells = document.querySelectorAll<HTMLButtonElement>(".cell");
+      await user.click(cells[0]);
+      await user.click(cells[2]);
+
+      expect(screen.getByText("Detonated")).toBeInTheDocument();
+      expect(await axe(container)).toHaveNoViolations();
+    } finally {
+      randomSpy.mockRestore();
+    }
   });
 
   it("starts in the Ready state with the Beginner board size", () => {
