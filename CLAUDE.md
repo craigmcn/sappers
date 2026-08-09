@@ -2,6 +2,8 @@
 
 A browser-based Minesweeper PWA. Built with React 19, Vite 8, TypeScript 6
 (strict). Full rules reference and design plan: [docs/DESIGN.md](docs/DESIGN.md).
+Accessibility/security/usability review and open follow-ups (tracked as
+GitHub issues): [docs/CONSIDERATIONS.md](docs/CONSIDERATIONS.md).
 
 > Dated narrative write-ups (what a checkpoint or feature PR did, and why)
 > belong in `docs/HISTORY.md`, not here — see the "CLAUDE.md hygiene" note in
@@ -37,9 +39,15 @@ yarn format:check    # Prettier check
     specific board shape rather than random placement.
 - **`src/components/`** — render-only React; no game rules live here.
   `Board`/`Cell` (click reveals, right-click or long-press flags, click on a
-  satisfied revealed number chords), `Header` (mine counter, timer, new-game,
-  per-difficulty stats summary), `DifficultySelector`, `GameOverlay`
-  (win/loss banner).
+  satisfied revealed number chords), `Header` (mine counter, timer, status),
+  `ControlsMenu` (New Field button + `DifficultySelector` + stats summary;
+  collapses behind a "Menu" toggle below 640px, inline on wider viewports),
+  `GameOverlay` (win/loss modal — fixed overlay, `role="alertdialog"`,
+  focus-trapped, rest of the app marked `inert` while shown).
+- **`src/hooks/useFocusTrap.ts`** — shared focus-trap/Escape-to-close/
+  restore-focus-on-close hook used by both `GameOverlay` and `ControlsMenu`'s
+  mobile dropdown, so floating panels behave consistently for keyboard and
+  screen-reader users.
 - **`src/stats/`** — anonymous, device-scoped, local-only stats.
   `deviceId.ts` persists a `crypto.randomUUID()` in `localStorage` as the
   "anonymous account" key. `statsStore.ts` defines the `StatsStore`
@@ -78,19 +86,38 @@ yarn format:check    # Prettier check
   (statistical, run across repeated trials), flood-fill cascades, win/loss,
   flagging, and chording — including a chord that detonates a mine under a
   wrongly-placed flag.
-- `src/stats/statsStore.test.ts` uses `fake-indexeddb/auto` (happy-dom does
-  not implement IndexedDB) — imported per-test-file, not globally, so it
-  doesn't leak into tests that don't need it.
+- `src/stats/statsStore.test.ts` forces `@vitest-environment node` (happy-dom
+  has no IndexedDB implementation; Node's own global `localStorage`/
+  `indexedDB` are handled by `NODE_OPTIONS=--no-experimental-webstorage` in
+  the `test`/`test:coverage` scripts and by `fake-indexeddb/auto`,
+  respectively). Covers per-difficulty/device-scoped summaries and the v1→v2
+  IndexedDB schema migration (compound `byDifficultyAndDevice` index) against
+  a hand-built legacy database, to confirm no data loss.
 - `src/App.test.tsx` covers the wired-up UI: reveal/flag/chord interaction,
-  difficulty switching, New Field reset, and an axe a11y check.
+  difficulty switching, New Field reset, and axe a11y checks — including the
+  loss overlay (mine placement forced deterministic via a mocked
+  `Math.random`) and the open mobile menu, not just the initial idle screen.
 - `e2e/` (Playwright) covers full-page flows including right-click flagging
-  and dark/light theme rendering via `page.emulateMedia`.
+  and dark/light theme rendering via `page.emulateMedia`. Desktop viewport
+  only (`playwright.config.ts` uses Desktop Chrome), so it doesn't exercise
+  `ControlsMenu`'s mobile-collapsed state.
 
 ## PWA / deployment
 
 `vite-pwa.config.ts` (shared by `vite.config.ts` and `vite.config.netlify.ts`)
 configures a Workbox `generateSW` service worker themed to the app's own
-palette. `scripts/copy-netlify-sw.mjs` copies the generated `sw.js`/
-`workbox-*.js` into the second Netlify build output directory
-(`netlify/sappers/`), since the plugin only writes to a single resolved
-`outDir`.
+palette (`registerType: "autoUpdate"` — updates activate silently, no
+user prompt; see `docs/CONSIDERATIONS.md` #11 for the tradeoff).
+`scripts/copy-netlify-sw.mjs` copies the generated `sw.js`/`workbox-*.js`
+into the second Netlify build output directory (`netlify/sappers/`), since
+the plugin only writes to a single resolved `outDir`.
+
+`public/_headers` sets a Content-Security-Policy (and other baseline
+security headers) for this repo's own Netlify site — copied by Vite into
+both `dist/` and the `netlify/` build outputs, but only takes effect where
+Netlify actually serves it, i.e. not for the `netlify/sappers/` copy, which
+is deployed as part of craigmcn.com's own separate build. `script-src`
+allow-lists `index.html`'s one inline script (the trailing-slash redirect
+relative-URL asset loading depends on) by exact SHA-256 hash rather than
+`'unsafe-inline'` — that hash must be recomputed if the script's content
+ever changes (see the comments in both files).
