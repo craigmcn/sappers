@@ -30,13 +30,14 @@ interface SappersDB extends DBSchema {
   results: {
     key: number;
     value: StoredResult;
-    indexes: { byDifficulty: string };
+    indexes: { byDifficultyAndDevice: [Difficulty, string] };
   };
 }
 
 const DB_NAME = "sappers-stats";
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const STORE = "results";
+const BY_DIFFICULTY_AND_DEVICE = "byDifficultyAndDevice";
 
 function summarize(results: StoredResult[]): DifficultySummary {
   const sorted = [...results].sort((a, b) => b.timestamp - a.timestamp);
@@ -69,12 +70,27 @@ export class IndexedDbStatsStore implements StatsStore {
   private getDb(): Promise<IDBPDatabase<SappersDB>> {
     if (!this.dbPromise) {
       this.dbPromise = openDB<SappersDB>(DB_NAME, DB_VERSION, {
-        upgrade(db) {
-          const store = db.createObjectStore(STORE, {
-            keyPath: "id",
-            autoIncrement: true,
-          });
-          store.createIndex("byDifficulty", "difficulty");
+        upgrade(db, oldVersion, _newVersion, transaction) {
+          const store =
+            oldVersion < 1
+              ? db.createObjectStore(STORE, {
+                  keyPath: "id",
+                  autoIncrement: true,
+                })
+              : transaction.objectStore(STORE);
+
+          if (oldVersion < 2) {
+            // Pre-v2 databases have a "byDifficulty" index that isn't part
+            // of the current schema type, so indexNames is cast to the
+            // plain DOM type to check for it.
+            if ((store.indexNames as DOMStringList).contains("byDifficulty")) {
+              store.deleteIndex("byDifficulty");
+            }
+            store.createIndex(BY_DIFFICULTY_AND_DEVICE, [
+              "difficulty",
+              "deviceId",
+            ]);
+          }
         },
       });
     }
@@ -104,7 +120,10 @@ export class IndexedDbStatsStore implements StatsStore {
 
   async getSummary(difficulty: Difficulty): Promise<DifficultySummary> {
     const db = await this.getDb();
-    const results = await db.getAllFromIndex(STORE, "byDifficulty", difficulty);
+    const results = await db.getAllFromIndex(STORE, BY_DIFFICULTY_AND_DEVICE, [
+      difficulty,
+      getDeviceId(),
+    ]);
     return summarize(results);
   }
 }
