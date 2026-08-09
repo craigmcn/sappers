@@ -16,18 +16,20 @@ export function GameOverlay({
 
   return (
     <div className={`game-overlay game-overlay--${status}`} role="status">
-      <p className="game-overlay__message">
-        {status === "won"
-          ? `Field cleared in ${elapsedSeconds}s`
-          : "Detonation — mine field lost"}
-      </p>
-      <button
-        type="button"
-        className="game-overlay__button"
-        onClick={onPlayAgain}
-      >
-        Play again
-      </button>
+      <div className="game-overlay__card">
+        <p className="game-overlay__message">
+          {status === "won"
+            ? `Field cleared in ${elapsedSeconds}s`
+            : "Detonation — mine field lost"}
+        </p>
+        <button
+          type="button"
+          className="game-overlay__button"
+          onClick={onPlayAgain}
+        >
+          Play again
+        </button>
+      </div>
     </div>
   );
 }

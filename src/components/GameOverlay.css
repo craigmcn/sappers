@@ -1,23 +1,36 @@
 .game-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: color-mix(in srgb, var(--ink) 55%, transparent);
+  z-index: 30;
+  animation: overlay-in 180ms ease-out;
+}
+
+.game-overlay__card {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
   flex-wrap: wrap;
-  margin: 0.75rem 1rem;
-  padding: 0.6rem 1rem;
-  border-radius: 0.3rem;
+  max-width: 20rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 0.4rem;
   font-family: var(--font-body);
-  animation: overlay-in 180ms ease-out;
+  background: var(--panel);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
-.game-overlay--won {
+.game-overlay--won .game-overlay__card {
   background: color-mix(in srgb, var(--safe) 18%, var(--panel));
   border: 1px solid var(--safe);
   color: var(--safe);
 }
 
-.game-overlay--lost {
+.game-overlay--lost .game-overlay__card {
   background: color-mix(in srgb, var(--danger) 18%, var(--panel));
   border: 1px solid var(--danger);
   color: var(--danger);
@@ -42,11 +55,9 @@
 @keyframes overlay-in {
   from {
     opacity: 0;
-    transform: translateY(-4px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 

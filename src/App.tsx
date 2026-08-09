@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Board } from "./components/Board";
-import { DifficultySelector } from "./components/DifficultySelector";
+import { ControlsMenu } from "./components/ControlsMenu";
 import { GameOverlay } from "./components/GameOverlay";
 import { Header } from "./components/Header";
 import {
@@ -65,10 +65,13 @@ function App() {
         minesRemaining={remainingMineCount(game)}
         elapsedSeconds={elapsedSeconds}
         status={game.status}
+      />
+      <ControlsMenu
+        difficulty={difficulty}
         summary={summary}
         onNewGame={() => startNewGame(difficulty)}
+        onChangeDifficulty={startNewGame}
       />
-      <DifficultySelector difficulty={difficulty} onChange={startNewGame} />
       <GameOverlay
         status={game.status}
         elapsedSeconds={elapsedSeconds}
