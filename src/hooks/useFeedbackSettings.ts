@@ -14,11 +14,9 @@ export function useFeedbackSettings(): FeedbackSettings & {
   );
 
   const update = (patch: Partial<FeedbackSettings>) => {
-    setSettings((current) => {
-      const next = { ...current, ...patch };
-      setFeedbackSettings(next);
-      return next;
-    });
+    const next = { ...settings, ...patch };
+    setFeedbackSettings(next);
+    setSettings(next);
   };
 
   return {
