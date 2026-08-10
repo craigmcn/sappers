@@ -9,8 +9,11 @@
     <line x1="384" y1="0" x2="384" y2="512" />
   </g>
   <!-- Mine, adapted from src/components/icons.tsx MineIcon (100x100, center 50,54),
-       scaled 2.2x and translated to center on (210,320). -->
-  <g fill="#E8E3D0" transform="translate(100 201.2) scale(2.2)">
+       scaled 2.2x. Combined with the flag below, then both shifted left by
+       9.4 so the flag+mine group's overall bounding box centers on the
+       512x512 canvas (the flag's triangle points right, so unshifted the
+       pair sits off-center). -->
+  <g fill="#E8E3D0" transform="translate(136.6 193.2) scale(2.2)">
     <g transform="rotate(0 50 54)">
       <rect x="47" y="20" width="6" height="14" rx="1" />
       <circle cx="50" cy="20" r="2.2" />
@@ -47,8 +50,10 @@
     <circle cx="50" cy="54" r="19" fill="none" stroke="#E8E3D0" stroke-width="4" />
   </g>
   <!-- Flag, adapted from src/components/icons.tsx FlagIcon (100x100), scaled 2x
-       and translated so it overlaps the mine's upper-right. -->
-  <g transform="translate(210 90) scale(2)">
+       and translated so the pole is centered on the mine (x=256) with its
+       bottom edge landing on the mine's circle, planting the flag above the
+       mine while leaving its bottom spike ("nub") visible below. -->
+  <g transform="translate(180.6 93.8) scale(2)">
     <rect x="30" y="14" width="6" height="72" rx="1" fill="#E8E3D0" />
     <path d="M36 18 L82 34 L36 50 Z" fill="#F2793A" opacity=".85" />
     <path
