@@ -86,6 +86,35 @@
   filter: brightness(1.08);
 }
 
+.controls-menu__feedback {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 0.3rem;
+}
+
+.controls-menu__feedback-legend {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+  padding: 0 0.2rem;
+}
+
+.controls-menu__feedback-option {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
 .controls-menu__summary {
   margin: 0;
   font-size: 0.8rem;

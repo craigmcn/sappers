@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { GameState } from "../engine/types";
+import { playLossFeedback } from "../feedback/feedback";
 import { Cell } from "./Cell";
 import "./Board.css";
 
@@ -28,6 +29,10 @@ export function Board({ game, onReveal, onFlag, onChord }: BoardProps) {
     setDims({ rows: game.rows, cols: game.cols });
     setFocusedCell({ row: 0, col: 0 });
   }
+
+  useEffect(() => {
+    if (game.status === "lost") playLossFeedback();
+  }, [game.status]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (!ARROW_KEYS.has(event.key)) return;

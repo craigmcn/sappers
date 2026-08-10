@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Difficulty } from "../engine/types";
 import type { DifficultySummary } from "../stats/statsStore";
+import { useFeedbackSettings } from "../hooks/useFeedbackSettings";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { DifficultySelector } from "./DifficultySelector";
 import "./ControlsMenu.css";
@@ -29,6 +30,7 @@ export function ControlsMenu({
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const { haptics, sound, setHaptics, setSound } = useFeedbackSettings();
 
   const close = () => setOpen(false);
   useFocusTrap(panelRef, open, { onEscape: close });
@@ -83,6 +85,25 @@ export function ControlsMenu({
           difficulty={difficulty}
           onChange={handleChangeDifficulty}
         />
+        <fieldset className="controls-menu__feedback">
+          <legend className="controls-menu__feedback-legend">Feedback</legend>
+          <label className="controls-menu__feedback-option">
+            <input
+              type="checkbox"
+              checked={haptics}
+              onChange={(event) => setHaptics(event.target.checked)}
+            />
+            Haptics
+          </label>
+          <label className="controls-menu__feedback-option">
+            <input
+              type="checkbox"
+              checked={sound}
+              onChange={(event) => setSound(event.target.checked)}
+            />
+            Sound
+          </label>
+        </fieldset>
         {summary && (
           <p className="controls-menu__summary">
             Best {formatBestTime(summary.bestTimeMs)} · Streak{" "}
