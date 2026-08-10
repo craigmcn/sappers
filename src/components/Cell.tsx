@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import type { Cell as CellData } from "../engine/types";
-import { playFlagFeedback } from "../feedback/feedback";
+import { playFlagFeedback, primeFlagFeedbackAudio } from "../feedback/feedback";
 import { FlagIcon, MineIcon } from "./icons";
 import "./Cell.css";
 
@@ -44,6 +44,9 @@ export function Cell({
     lastPointerType.current = event.pointerType;
     if (event.pointerType !== "touch" || gameOver) return;
     longPressFired.current = false;
+    // Unlock the AudioContext here, synchronously within the gesture — iOS
+    // Safari won't resume it from inside the setTimeout callback below.
+    primeFlagFeedbackAudio();
     timerRef.current = setTimeout(() => {
       longPressFired.current = true;
       onFlag(row, col);
