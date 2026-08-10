@@ -29,6 +29,7 @@ export function Cell({
 }: CellProps) {
   const longPressFired = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastPointerType = useRef<string | null>(null);
 
   const clearLongPressTimer = () => {
     if (timerRef.current) {
@@ -38,6 +39,7 @@ export function Cell({
   };
 
   const handlePointerDown = (event: React.PointerEvent) => {
+    lastPointerType.current = event.pointerType;
     if (event.pointerType !== "touch" || gameOver) return;
     longPressFired.current = false;
     timerRef.current = setTimeout(() => {
@@ -48,6 +50,7 @@ export function Cell({
 
   const handlePointerUp = () => clearLongPressTimer();
   const handlePointerLeave = () => clearLongPressTimer();
+  const handlePointerCancel = () => clearLongPressTimer();
 
   const handleClick = () => {
     if (gameOver) return;
@@ -64,6 +67,10 @@ export function Cell({
 
   const handleContextMenu = (event: React.MouseEvent) => {
     event.preventDefault();
+    // Mobile browsers fire a native contextmenu event on long-press, which
+    // would otherwise double-toggle the flag alongside our own touch timer
+    // above (see #15) — only handle this as the desktop right-click path.
+    if (lastPointerType.current === "touch") return;
     if (gameOver || cell.visibility === "revealed") return;
     onFlag(row, col);
   };
@@ -103,6 +110,7 @@ export function Cell({
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerLeave={handlePointerLeave}
+      onPointerCancel={handlePointerCancel}
     >
       {cell.visibility === "flagged" && (
         <span className="cell__flag" aria-hidden="true" />
