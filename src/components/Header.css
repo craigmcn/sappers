@@ -50,8 +50,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--ink);
-  color: var(--signal);
+  background: var(--readout-bg);
+  color: var(--readout-fg);
   border-radius: 0.25rem;
   padding: 0.25rem 0.6rem;
   min-width: 4.5rem;
@@ -61,7 +61,7 @@
   font-size: 0.6rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  opacity: 0.75;
+  opacity: 0.85;
 }
 
 .header__readout-value {
