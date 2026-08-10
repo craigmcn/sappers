@@ -15,10 +15,13 @@ export function Board({ game, onReveal, onFlag, onChord }: BoardProps) {
   return (
     <div
       className={`board${game.status === "lost" ? " board--lost" : ""}`}
-      style={{
-        gridTemplateColumns: `repeat(${game.cols}, 2rem)`,
-        gridTemplateRows: `repeat(${game.rows}, 2rem)`,
-      }}
+      style={
+        {
+          "--cols": game.cols,
+          gridTemplateColumns: `repeat(${game.cols}, var(--cell-size))`,
+          gridTemplateRows: `repeat(${game.rows}, var(--cell-size))`,
+        } as React.CSSProperties
+      }
       role="group"
       aria-label="Minefield"
     >
