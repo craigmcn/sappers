@@ -26,12 +26,14 @@ describe("Cell", () => {
         row={0}
         col={0}
         gameOver={false}
+        tabIndex={0}
         onReveal={vi.fn()}
         onFlag={onFlag}
         onChord={vi.fn()}
+        onCellFocus={vi.fn()}
       />,
     );
-    const button = getByRole("button");
+    const button = getByRole("gridcell");
 
     fireEvent.pointerDown(button, { pointerType: "touch" });
     vi.advanceTimersByTime(500);
@@ -50,12 +52,14 @@ describe("Cell", () => {
         row={0}
         col={0}
         gameOver={false}
+        tabIndex={0}
         onReveal={vi.fn()}
         onFlag={onFlag}
         onChord={vi.fn()}
+        onCellFocus={vi.fn()}
       />,
     );
-    const button = getByRole("button");
+    const button = getByRole("gridcell");
 
     fireEvent.pointerDown(button, { pointerType: "mouse" });
     fireEvent.contextMenu(button);
