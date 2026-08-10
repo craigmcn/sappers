@@ -8,7 +8,7 @@ import { VitePWA, type VitePWAOptions } from "vite-plugin-pwa";
 // (craigmcn.com/sappers).
 export function pwaPlugin(): ReturnType<typeof VitePWA> {
   const options: Partial<VitePWAOptions> = {
-    registerType: "autoUpdate",
+    registerType: "prompt",
     manifest: {
       name: "Sappers",
       short_name: "Sappers",
