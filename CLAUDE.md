@@ -1,9 +1,12 @@
 # Sappers
 
 A browser-based Minesweeper PWA. Built with React 19, Vite 8, TypeScript 6
-(strict). Full rules reference and design plan: [docs/DESIGN.md](docs/DESIGN.md).
-Accessibility/security/usability review and open follow-ups (tracked as
-GitHub issues): [docs/CONSIDERATIONS.md](docs/CONSIDERATIONS.md).
+(strict). New to this codebase? Start with
+[docs/ONBOARDING.md](docs/ONBOARDING.md) for a plain-English walkthrough
+aimed at a junior/intermediate frontend dev. Full rules reference and
+design plan: [docs/DESIGN.md](docs/DESIGN.md). Accessibility/security/
+usability review and open follow-ups (tracked as GitHub issues):
+[docs/CONSIDERATIONS.md](docs/CONSIDERATIONS.md).
 
 > Dated narrative write-ups (what a checkpoint or feature PR did, and why)
 > belong in `docs/HISTORY.md`, not here — see the "CLAUDE.md hygiene" note in
