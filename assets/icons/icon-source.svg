@@ -8,61 +8,68 @@
     <line x1="256" y1="0" x2="256" y2="512" />
     <line x1="384" y1="0" x2="384" y2="512" />
   </g>
-  <!-- Mine, adapted from src/components/icons.tsx MineIcon (100x100, center 50,54),
-       scaled 2.2x. Combined with the flag below, then both shifted so the
-       flag+mine group's overall bounding box centers on the 512x512 canvas
-       (the pole bisects the mine and the flag's triangle points right, so
-       unshifted the pair sits off-center). -->
-  <g fill="#E8E3D0" transform="translate(136.6 146.5) scale(2.2)">
-    <g transform="rotate(0 50 54)">
-      <rect x="47" y="20" width="6" height="14" rx="1" />
-      <circle cx="50" cy="20" r="2.2" />
+  <!-- The mine+flag group below (pole top to bottom-spike tip) measures
+       ~178px tall as laid out, centered on the canvas. Scaling it by
+       256/178 about the canvas center (256,256) makes it span exactly the
+       center 2x2 block of grid cells (128 to 384, both axes) without
+       disturbing the pole-bisects-mine layout underneath. -->
+  <g transform="translate(256 256) scale(1.4382) translate(-256 -256)">
+    <!-- Mine, adapted from src/components/icons.tsx MineIcon (100x100, center 50,54),
+         scaled 2.2x. Combined with the flag below, then both shifted so the
+         flag+mine group's overall bounding box centers on the 512x512 canvas
+         (the pole bisects the mine and the flag's triangle points right, so
+         unshifted the pair sits off-center). -->
+    <g fill="#E8E3D0" transform="translate(136.6 146.5) scale(2.2)">
+      <g transform="rotate(0 50 54)">
+        <rect x="47" y="20" width="6" height="14" rx="1" />
+        <circle cx="50" cy="20" r="2.2" />
+      </g>
+      <g transform="rotate(45 50 54)">
+        <rect x="47" y="20" width="6" height="14" rx="1" />
+        <circle cx="50" cy="20" r="2.2" />
+      </g>
+      <g transform="rotate(90 50 54)">
+        <rect x="47" y="20" width="6" height="14" rx="1" />
+        <circle cx="50" cy="20" r="2.2" />
+      </g>
+      <g transform="rotate(135 50 54)">
+        <rect x="47" y="20" width="6" height="14" rx="1" />
+        <circle cx="50" cy="20" r="2.2" />
+      </g>
+      <g transform="rotate(180 50 54)">
+        <rect x="47" y="20" width="6" height="14" rx="1" />
+        <circle cx="50" cy="20" r="2.2" />
+      </g>
+      <g transform="rotate(225 50 54)">
+        <rect x="47" y="20" width="6" height="14" rx="1" />
+        <circle cx="50" cy="20" r="2.2" />
+      </g>
+      <g transform="rotate(270 50 54)">
+        <rect x="47" y="20" width="6" height="14" rx="1" />
+        <circle cx="50" cy="20" r="2.2" />
+      </g>
+      <g transform="rotate(315 50 54)">
+        <rect x="47" y="20" width="6" height="14" rx="1" />
+        <circle cx="50" cy="20" r="2.2" />
+      </g>
+      <circle cx="50" cy="54" r="19" opacity="0.4" />
+      <circle cx="50" cy="54" r="19" fill="none" stroke="#E8E3D0" stroke-width="4" />
     </g>
-    <g transform="rotate(45 50 54)">
-      <rect x="47" y="20" width="6" height="14" rx="1" />
-      <circle cx="50" cy="20" r="2.2" />
+    <!-- Flag, adapted from src/components/icons.tsx FlagIcon (100x100), scaled 2x
+         and translated so the pole bisects the mine, its bottom edge landing
+         on the bottom of the mine's circle, while the bottom spike ("nub")
+         stays visible below. -->
+    <g transform="translate(180.6 139.5) scale(2)">
+      <rect x="30" y="14" width="6" height="72" rx="1" fill="#E8E3D0" />
+      <path d="M36 18 L82 34 L36 50 Z" fill="#F2793A" opacity=".85" />
+      <path
+        d="M36 18 L82 34 L36 50 Z"
+        fill="none"
+        stroke="#F2793A"
+        stroke-width="2"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+      />
     </g>
-    <g transform="rotate(90 50 54)">
-      <rect x="47" y="20" width="6" height="14" rx="1" />
-      <circle cx="50" cy="20" r="2.2" />
-    </g>
-    <g transform="rotate(135 50 54)">
-      <rect x="47" y="20" width="6" height="14" rx="1" />
-      <circle cx="50" cy="20" r="2.2" />
-    </g>
-    <g transform="rotate(180 50 54)">
-      <rect x="47" y="20" width="6" height="14" rx="1" />
-      <circle cx="50" cy="20" r="2.2" />
-    </g>
-    <g transform="rotate(225 50 54)">
-      <rect x="47" y="20" width="6" height="14" rx="1" />
-      <circle cx="50" cy="20" r="2.2" />
-    </g>
-    <g transform="rotate(270 50 54)">
-      <rect x="47" y="20" width="6" height="14" rx="1" />
-      <circle cx="50" cy="20" r="2.2" />
-    </g>
-    <g transform="rotate(315 50 54)">
-      <rect x="47" y="20" width="6" height="14" rx="1" />
-      <circle cx="50" cy="20" r="2.2" />
-    </g>
-    <circle cx="50" cy="54" r="19" opacity="0.4" />
-    <circle cx="50" cy="54" r="19" fill="none" stroke="#E8E3D0" stroke-width="4" />
-  </g>
-  <!-- Flag, adapted from src/components/icons.tsx FlagIcon (100x100), scaled 2x
-       and translated so the pole bisects the mine, its bottom edge landing
-       on the bottom of the mine's circle, while the bottom spike ("nub")
-       stays visible below. -->
-  <g transform="translate(180.6 139.5) scale(2)">
-    <rect x="30" y="14" width="6" height="72" rx="1" fill="#E8E3D0" />
-    <path d="M36 18 L82 34 L36 50 Z" fill="#F2793A" opacity=".85" />
-    <path
-      d="M36 18 L82 34 L36 50 Z"
-      fill="none"
-      stroke="#F2793A"
-      stroke-width="2"
-      stroke-linejoin="round"
-      stroke-linecap="round"
-    />
   </g>
 </svg>
