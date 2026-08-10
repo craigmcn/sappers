@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import type { Cell as CellData } from "../engine/types";
+import { FlagIcon, MineIcon } from "./icons";
 import "./Cell.css";
 
 const LONG_PRESS_MS = 450;
@@ -112,11 +113,9 @@ export function Cell({
       onPointerLeave={handlePointerLeave}
       onPointerCancel={handlePointerCancel}
     >
-      {cell.visibility === "flagged" && (
-        <span className="cell__flag" aria-hidden="true" />
-      )}
+      {cell.visibility === "flagged" && <FlagIcon className="cell__flag" />}
       {cell.visibility === "revealed" && cell.mine && (
-        <span className="cell__mine" aria-hidden="true" />
+        <MineIcon className="cell__mine" />
       )}
       {cell.visibility === "revealed" && !cell.mine && cell.adjacent > 0 && (
         <span className={`cell__number cell__number--${cell.adjacent}`}>

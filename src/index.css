@@ -72,6 +72,10 @@
   --num-7: #2b2b22;
   --num-8: #755a19;
 
+  /* mine icon: a fixed light tone rather than a theme-flipping token, since
+     it always sits on the --danger red background in both themes */
+  --mine-fg: #fdf6ee;
+
   /* header timer/mine-count readout: a fixed dark LCD-style panel that
      doesn't invert with the theme, unlike --ink */
   --readout-bg: #1b1d16;
