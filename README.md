@@ -2,7 +2,9 @@
 
 A browser-based Minesweeper, built as an installable PWA.
 
-See [CLAUDE.md](CLAUDE.md) for architecture and [docs/DESIGN.md](docs/DESIGN.md)
+New to this codebase? Start with [docs/ONBOARDING.md](docs/ONBOARDING.md)
+for a plain-English walkthrough. See [CLAUDE.md](CLAUDE.md) for the
+current-state architecture reference and [docs/DESIGN.md](docs/DESIGN.md)
 for the full rules/design doc.
 
 ## How to play
