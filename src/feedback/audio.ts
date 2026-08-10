@@ -14,6 +14,18 @@ function getAudioContext(): AudioContext | null {
   return audioContext;
 }
 
+/**
+ * iOS Safari only creates/resumes an AudioContext when that call happens
+ * synchronously inside a user-gesture event handler — a setTimeout callback
+ * (e.g. the long-press flag timer) fires too late to count, leaving the
+ * context stuck "suspended" and silent. Call this directly from the
+ * pointerdown/touchstart handler itself, before any delay, so the context
+ * is already running by the time a later playTone() call needs it.
+ */
+export function primeAudio(): void {
+  getAudioContext();
+}
+
 /** Synthesizes a short tone — no audio asset to license or fetch. */
 export function playTone(frequencyHz: number, durationMs: number): void {
   const context = getAudioContext();
