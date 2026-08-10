@@ -1,11 +1,15 @@
 .board {
+  /* Responsive cell size: shrinks to fit the viewport width on dense
+     boards (e.g. Expert, 30 cols), floored at 24px — the WCAG 2.5.8
+     minimum tappable target size — and capped at the default 2rem. */
+  --cell-size: clamp(24px, calc((100vw - 4rem) / var(--cols)), 2rem);
   display: grid;
   gap: 2px;
   padding: 0.5rem;
   background-image:
     linear-gradient(var(--line) 1px, transparent 1px),
     linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: 2.125rem 2.125rem;
+  background-size: calc(var(--cell-size) + 2px) calc(var(--cell-size) + 2px);
   background-color: var(--panel-shadow);
   border-radius: 0.4rem;
   overflow: auto;
