@@ -32,7 +32,12 @@ function App() {
   };
 
   useEffect(() => {
-    statsStore.getSummary(difficulty).then(setSummary);
+    statsStore
+      .getSummary(difficulty)
+      .then(setSummary)
+      .catch((error: unknown) => {
+        console.error("Failed to load stats summary", error);
+      });
   }, [difficulty]);
 
   useEffect(() => {
@@ -56,7 +61,10 @@ function App() {
         timestamp: Date.now(),
       })
       .then(() => statsStore.getSummary(difficulty))
-      .then(setSummary);
+      .then(setSummary)
+      .catch((error: unknown) => {
+        console.error("Failed to record stats result", error);
+      });
   }, [game.status, game.endTime, game.startTime, difficulty]);
 
   const gameOver = game.status === "won" || game.status === "lost";
