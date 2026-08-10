@@ -9,9 +9,11 @@ interface CellProps {
   row: number;
   col: number;
   gameOver: boolean;
+  tabIndex: number;
   onReveal: (row: number, col: number) => void;
   onFlag: (row: number, col: number) => void;
   onChord: (row: number, col: number) => void;
+  onCellFocus: (row: number, col: number) => void;
 }
 
 export function Cell({
@@ -19,9 +21,11 @@ export function Cell({
   row,
   col,
   gameOver,
+  tabIndex,
   onReveal,
   onFlag,
   onChord,
+  onCellFocus,
 }: CellProps) {
   const longPressFired = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -64,6 +68,14 @@ export function Cell({
     onFlag(row, col);
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (gameOver || cell.visibility === "revealed") return;
+    if (event.key === "f" || event.key === "F") {
+      event.preventDefault();
+      onFlag(row, col);
+    }
+  };
+
   const label =
     cell.visibility === "flagged"
       ? `Flagged cell, row ${row + 1}, column ${col + 1}`
@@ -78,12 +90,16 @@ export function Cell({
   return (
     <button
       type="button"
+      role="gridcell"
       className={`cell cell--${cell.visibility}${cell.mine && cell.visibility === "revealed" ? " cell--mine" : ""}`}
       data-row={row}
       data-col={col}
+      tabIndex={tabIndex}
       aria-label={label}
       onClick={handleClick}
       onContextMenu={handleContextMenu}
+      onKeyDown={handleKeyDown}
+      onFocus={() => onCellFocus(row, col)}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerLeave={handlePointerLeave}

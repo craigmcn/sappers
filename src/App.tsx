@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Board } from "./components/Board";
 import { ControlsMenu } from "./components/ControlsMenu";
 import { GameOverlay } from "./components/GameOverlay";
@@ -24,11 +24,15 @@ function App() {
   const [game, setGame] = useState(() => createGame(difficulty));
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [summary, setSummary] = useState<DifficultySummary | null>(null);
+  const [announcement, setAnnouncement] = useState("");
+  const revealedCountRef = useRef(0);
 
   const startNewGame = (nextDifficulty: Difficulty) => {
     setDifficulty(nextDifficulty);
     setGame(createGame(nextDifficulty));
     setElapsedSeconds(0);
+    revealedCountRef.current = 0;
+    setAnnouncement("");
   };
 
   useEffect(() => {
@@ -39,6 +43,19 @@ function App() {
         console.error("Failed to load stats summary", error);
       });
   }, [difficulty]);
+
+  useEffect(() => {
+    const revealedCount = game.board
+      .flat()
+      .filter((cell) => cell.visibility === "revealed").length;
+    const delta = revealedCount - revealedCountRef.current;
+    revealedCountRef.current = revealedCount;
+    if (delta > 0) {
+      setAnnouncement(
+        `${delta} cell${delta === 1 ? "" : "s"} cleared. ${remainingMineCount(game)} mines remaining.`,
+      );
+    }
+  }, [game]);
 
   useEffect(() => {
     if (game.status !== "playing" || game.startTime === null) return;
@@ -90,6 +107,9 @@ function App() {
             onFlag={(row, col) => setGame((g) => toggleFlag(g, row, col))}
             onChord={(row, col) => setGame((g) => chord(g, row, col))}
           />
+        </div>
+        <div aria-live="polite" className="visually-hidden">
+          {announcement}
         </div>
       </div>
       <GameOverlay
