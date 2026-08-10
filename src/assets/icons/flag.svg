@@ -1,0 +1,13 @@
+<!-- Original artwork for Sappers — not derived from any third-party icon set. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect x="30" y="14" width="6" height="72" rx="1" fill="currentColor" />
+  <path d="M36 18 L82 34 L36 50 Z" fill="currentColor" opacity=".4" />
+  <path
+    d="M36 18 L82 34 L36 50 Z"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="4"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+  />
+</svg>
