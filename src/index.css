@@ -71,6 +71,11 @@
   --num-6: #1f6b63;
   --num-7: #2b2b22;
   --num-8: #755a19;
+
+  /* header timer/mine-count readout: a fixed dark LCD-style panel that
+     doesn't invert with the theme, unlike --ink */
+  --readout-bg: #1b1d16;
+  --readout-fg: #f2793a;
 }
 
 @media (prefers-color-scheme: dark) {
