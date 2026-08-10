@@ -10,9 +10,11 @@ interface CellProps {
   row: number;
   col: number;
   gameOver: boolean;
+  tabIndex: number;
   onReveal: (row: number, col: number) => void;
   onFlag: (row: number, col: number) => void;
   onChord: (row: number, col: number) => void;
+  onCellFocus: (row: number, col: number) => void;
 }
 
 export function Cell({
@@ -20,12 +22,15 @@ export function Cell({
   row,
   col,
   gameOver,
+  tabIndex,
   onReveal,
   onFlag,
   onChord,
+  onCellFocus,
 }: CellProps) {
   const longPressFired = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastPointerType = useRef<string | null>(null);
 
   const clearLongPressTimer = () => {
     if (timerRef.current) {
@@ -35,6 +40,7 @@ export function Cell({
   };
 
   const handlePointerDown = (event: React.PointerEvent) => {
+    lastPointerType.current = event.pointerType;
     if (event.pointerType !== "touch" || gameOver) return;
     longPressFired.current = false;
     timerRef.current = setTimeout(() => {
@@ -45,6 +51,7 @@ export function Cell({
 
   const handlePointerUp = () => clearLongPressTimer();
   const handlePointerLeave = () => clearLongPressTimer();
+  const handlePointerCancel = () => clearLongPressTimer();
 
   const handleClick = () => {
     if (gameOver) return;
@@ -61,8 +68,20 @@ export function Cell({
 
   const handleContextMenu = (event: React.MouseEvent) => {
     event.preventDefault();
+    // Mobile browsers fire a native contextmenu event on long-press, which
+    // would otherwise double-toggle the flag alongside our own touch timer
+    // above (see #15) — only handle this as the desktop right-click path.
+    if (lastPointerType.current === "touch") return;
     if (gameOver || cell.visibility === "revealed") return;
     onFlag(row, col);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (gameOver || cell.visibility === "revealed") return;
+    if (event.key === "f" || event.key === "F") {
+      event.preventDefault();
+      onFlag(row, col);
+    }
   };
 
   const label =
@@ -79,15 +98,20 @@ export function Cell({
   return (
     <button
       type="button"
+      role="gridcell"
       className={`cell cell--${cell.visibility}${cell.mine && cell.visibility === "revealed" ? " cell--mine" : ""}`}
       data-row={row}
       data-col={col}
+      tabIndex={tabIndex}
       aria-label={label}
       onClick={handleClick}
       onContextMenu={handleContextMenu}
+      onKeyDown={handleKeyDown}
+      onFocus={() => onCellFocus(row, col)}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerLeave={handlePointerLeave}
+      onPointerCancel={handlePointerCancel}
     >
       {cell.visibility === "flagged" && <FlagIcon className="cell__flag" />}
       {cell.visibility === "revealed" && cell.mine && (

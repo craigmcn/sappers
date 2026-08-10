@@ -1,6 +1,6 @@
 .cell {
-  width: 2rem;
-  height: 2rem;
+  width: var(--cell-size, 2rem);
+  height: var(--cell-size, 2rem);
   padding: 0;
   border: none;
   border-radius: 0.15rem;
@@ -9,10 +9,12 @@
   justify-content: center;
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: clamp(0.75rem, calc(var(--cell-size, 2rem) * 0.5), 1rem);
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
 }
 
 .cell--hidden,
@@ -26,6 +28,13 @@
 .cell--hidden:hover,
 .cell--flagged:hover {
   filter: brightness(1.04);
+}
+
+.cell:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: -2px;
+  z-index: 1;
+  position: relative;
 }
 
 .cell--revealed {
