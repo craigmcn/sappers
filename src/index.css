@@ -58,19 +58,19 @@
   --panel-raised: #f5f1e2;
   --panel-shadow: #b7ac86;
   --signal: #d9531e;
-  --signal-ink: #fdf6ee;
+  --signal-ink: #151511;
   --danger: #b3261e;
   --safe: #4c6b3e;
 
   /* grease-pencil map-annotation inks, one per adjacent-mine count */
   --num-1: #3b5b84;
-  --num-2: #56682e;
+  --num-2: #53642c;
   --num-3: #9c3b26;
   --num-4: #3f3b7a;
   --num-5: #6b2530;
   --num-6: #1f6b63;
   --num-7: #2b2b22;
-  --num-8: #8a6a1e;
+  --num-8: #755a19;
 }
 
 @media (prefers-color-scheme: dark) {
